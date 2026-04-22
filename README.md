@@ -1,11 +1,15 @@
 # EasyCode
 
+> **Note:** This is a fork of [makejavas/EasyCode](https://github.com/makejavas/EasyCode) with dependency upgrades and compatibility improvements for IDEA 2023.2+.
+>
+> Original project by [makejava](https://github.com/makejavas), licensed under the [MIT License](LICENSE).
+
 ### EasyCode能做什么？
 
 > EasyCode是基于IntelliJ IDEA Ultimate版开发的一个代码生成插件，主要通过自定义模板（基于velocity）来生成各种你想要的代码。通常用于生成Entity、Dao、Service、Controller。如果你动手能力强还可以用于生成HTML、JS、PHP等代码。理论上来说只要是与数据有关的代码都是可以生成的。
 ---
 ### 使用环境
-`IntelliJ IDEA Ultimate版（172+）`
+`IntelliJ IDEA Ultimate版（2023.2+）`
 
 ### 支持的数据库类型
 ##### 因为是基于Database Tool开发，所有Database Tool支持的数据库都是支持的。
