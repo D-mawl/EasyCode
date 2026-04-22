@@ -26,11 +26,11 @@ public interface TableInfoSettingsService extends PersistentStateComponent<Table
     static TableInfoSettingsService getInstance() {
         try {
             return ProjectUtils.getCurrProject().getService(TableInfoSettingsServiceImpl.class);
-        } catch (AssertionError e) {
+        } catch (AssertionError | RuntimeException e) {
             // 出现配置文件被错误修改，或不兼容时直接删除配置文件。
             VirtualFile workspaceFile = ProjectUtils.getCurrProject().getWorkspaceFile();
             if (workspaceFile != null) {
-                VirtualFile configFile = workspaceFile.getParent().findChild("easyCodeTableSetting.xml");
+                VirtualFile configFile = workspaceFile.getParent().findChild("easyCodeTableSettingEncode.xml");
                 if (configFile != null && configFile.exists()) {
                     WriteCommandAction.runWriteCommandAction(ProjectUtils.getCurrProject(), () -> {
                         try {
