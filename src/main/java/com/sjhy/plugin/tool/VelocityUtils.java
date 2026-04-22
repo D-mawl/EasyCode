@@ -2,7 +2,6 @@ package com.sjhy.plugin.tool;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.runtime.RuntimeConstants;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -26,8 +25,7 @@ public class VelocityUtils {
         // 设置初始化配置
         INIT_PROP = new Properties();
         // 修复部分用户的velocity日志记录无权访问velocity.log文件问题
-        INIT_PROP.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS, "org.apache.velocity.runtime.log.Log4JLogChute");
-        INIT_PROP.setProperty("runtime.log.logsystem.log4j.logger", "velocity");
+        INIT_PROP.setProperty("runtime.log.logsystem.class", "org.apache.velocity.runtime.log.NullLogChute");
     }
 
     /**

@@ -8,7 +8,6 @@ import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.PsiClass;
-import com.intellij.util.ReflectionUtil;
 import com.sjhy.plugin.dict.GlobalDict;
 import com.sjhy.plugin.dto.GenerateOptions;
 import com.sjhy.plugin.dto.SettingsStorageDTO;
@@ -231,8 +230,12 @@ public class CodeGenerateServiceImpl implements CodeGenerateService {
         // 项目路径
         param.put("projectPath", project.getBasePath());
         // Database数据库工具
-        param.put("dbUtil", ReflectionUtil.newInstance(DbUtil.class));
-        param.put("dasUtil", ReflectionUtil.newInstance(DasUtil.class));
+        try {
+            param.put("dbUtil", DbUtil.class.getDeclaredConstructor().newInstance());
+            param.put("dasUtil", DasUtil.class.getDeclaredConstructor().newInstance());
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to instantiate database utilities", e);
+        }
         return param;
     }
 
