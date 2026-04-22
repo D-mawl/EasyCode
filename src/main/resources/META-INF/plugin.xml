@@ -21,7 +21,7 @@
 
 
     <change-notes><![CDATA[
-      <p>1.3.0</p>
+      <p>2.0.1</p>
       <ul>
         <li>1.Fork from makejavas/EasyCode and upgrade dependencies</li>
         <li>2.Upgrade IntelliJ Plugin SDK to 1.17.0, support IDEA 2023.2+</li>
@@ -292,7 +292,7 @@
 
     <application-components>
         <!--<component>-->
-            <!--<implementation-class>com.sjhy.plugin.tool.CloneUtils</implementation-class>-->
+            <!--<implementation-class>com.mawl.easycode.tool.CloneUtils</implementation-class>-->
         <!--</component>-->
     </application-components>
 
@@ -300,17 +300,17 @@
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
         <!--实例化配置信息服务-->
-        <applicationService serviceImplementation="com.sjhy.plugin.service.impl.SettingsStorageServiceImpl"/>
+        <applicationService serviceImplementation="com.mawl.easycode.service.impl.SettingsStorageServiceImpl"/>
         <!--项目服务-->
-        <projectService serviceImplementation="com.sjhy.plugin.service.impl.TableInfoSettingsServiceImpl"/>
-        <projectService serviceInterface="com.sjhy.plugin.service.CodeGenerateService" serviceImplementation="com.sjhy.plugin.service.impl.CodeGenerateServiceImpl"/>
+        <projectService serviceImplementation="com.mawl.easycode.service.impl.TableInfoSettingsServiceImpl"/>
+        <projectService serviceInterface="com.mawl.easycode.service.CodeGenerateService" serviceImplementation="com.mawl.easycode.service.impl.CodeGenerateServiceImpl"/>
         <!--系统设置面板-->
-        <applicationConfigurable dynamic="true" instance="com.sjhy.plugin.ui.MainSettingForm"/>
+        <applicationConfigurable dynamic="true" instance="com.mawl.easycode.ui.MainSettingForm"/>
     </extensions>
 
     <actions>
         <!-- Add your actions here -->
-        <group id="com.github.mawl.easycode.action" class="com.sjhy.plugin.actions.MainActionGroup" text="EasyCode 2026"
+        <group id="com.github.mawl.easycode.action" class="com.mawl.easycode.actions.MainActionGroup" text="EasyCode 2026"
                popup="true">
             <!--生成代码菜单-->
             <add-to-group group-id="DatabaseViewPopupMenu" anchor="first"/>

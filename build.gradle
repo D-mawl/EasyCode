@@ -14,8 +14,8 @@ plugins {
 }
 
 
-group 'com.sjhy'
-version '1.3.0'
+group 'com.mawl.easycode'
+version '2.0.1'
 
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
@@ -31,7 +31,7 @@ repositories {
 
 intellij {
 //    插件名称
-    pluginName = 'EasyCode'
+    pluginName = 'EasyCode2026'
     // 沙箱目录位置，用于保存IDEA的设置，默认在build文件下面，防止clean，放在根目录下。
     sandboxDir = "${rootProject.rootDir}/idea-sandbox"
     // 开发环境运行时使用的版本
