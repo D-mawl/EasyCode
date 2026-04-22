@@ -79,7 +79,7 @@ public class MainSettingForm implements Configurable, Configurable.Composite, Ba
 
     @Override
     public String getDisplayName() {
-        return "EasyCode";
+        return "EasyCode 2026";
     }
 
     @Nullable

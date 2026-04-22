@@ -231,8 +231,12 @@ public class CodeGenerateServiceImpl implements CodeGenerateService {
         param.put("projectPath", project.getBasePath());
         // Database数据库工具
         try {
-            param.put("dbUtil", DbUtil.class.getDeclaredConstructor().newInstance());
-            param.put("dasUtil", DasUtil.class.getDeclaredConstructor().newInstance());
+            var dbUtilConstructor = DbUtil.class.getDeclaredConstructor();
+            dbUtilConstructor.setAccessible(true);
+            param.put("dbUtil", dbUtilConstructor.newInstance());
+            var dasUtilConstructor = DasUtil.class.getDeclaredConstructor();
+            dasUtilConstructor.setAccessible(true);
+            param.put("dasUtil", dasUtilConstructor.newInstance());
         } catch (Exception e) {
             throw new RuntimeException("Failed to instantiate database utilities", e);
         }

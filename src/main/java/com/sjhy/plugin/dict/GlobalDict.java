@@ -11,15 +11,15 @@ public interface GlobalDict {
     /**
      * 提示信息
      */
-    String TITLE_INFO = "EasyCode Title Info";
+    String TITLE_INFO = "EasyCode 2026";
     /**
      * 版本号
      */
-    String VERSION = "1.2.9";
+    String VERSION = "1.3.0";
     /**
      * 作者名称
      */
-    String AUTHOR = "makejava";
+    String AUTHOR = "mawl";
     /**
      * 默认分组名称
      */
