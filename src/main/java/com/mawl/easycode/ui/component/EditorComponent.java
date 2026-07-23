@@ -1,6 +1,5 @@
 package com.mawl.easycode.ui.component;
 
-import com.intellij.ide.IdeBundle;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
@@ -98,7 +97,7 @@ public class EditorComponent<T extends AbstractEditorItem> {
 
         // 描述面板
         JPanel descriptionPanel = new JPanel(new GridBagLayout());
-        descriptionPanel.add(SeparatorFactory.createSeparator(IdeBundle.message("label.description"), null),
+        descriptionPanel.add(SeparatorFactory.createSeparator("描述", null),
                 new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
                         JBUI.insetsBottom(2), 0, 0));
         descriptionPanel.add(ScrollPaneFactory.createScrollPane(editorPane),
