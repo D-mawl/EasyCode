@@ -27,6 +27,12 @@ public class MainActionGroup extends ActionGroup {
      */
     private final CacheDataUtils cacheDataUtils = CacheDataUtils.getInstance();
 
+    @NotNull
+    @Override
+    public ActionUpdateThread getActionUpdateThread() {
+        // getChildren 中访问 PSI/数据库模型，需在后台线程执行
+        return ActionUpdateThread.BGT;
+    }
 
     /**
      * 根据右键在不同的选项上展示不同的子菜单
@@ -97,6 +103,12 @@ public class MainActionGroup extends ActionGroup {
             actionManager.registerAction(configActionId, configAction);
         }
         AnAction clearConfigAction = new AnAction("Clear Config") {
+            @NotNull
+            @Override
+            public ActionUpdateThread getActionUpdateThread() {
+                return ActionUpdateThread.BGT;
+            }
+
             @Override
             public void actionPerformed(@NotNull AnActionEvent e) {
                 DbTable dbTable = CacheDataUtils.getInstance().getSelectDbTable();

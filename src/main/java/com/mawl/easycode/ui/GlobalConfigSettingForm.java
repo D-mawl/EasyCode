@@ -1,7 +1,6 @@
 package com.mawl.easycode.ui;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.intellij.ide.fileTemplates.impl.UrlUtil;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.util.ExceptionUtil;
 import com.mawl.easycode.dict.GlobalDict;
@@ -9,6 +8,7 @@ import com.mawl.easycode.dto.SettingsStorageDTO;
 import com.mawl.easycode.entity.GlobalConfig;
 import com.mawl.easycode.entity.GlobalConfigGroup;
 import com.mawl.easycode.tool.CloneUtils;
+import com.mawl.easycode.tool.FileUtils;
 import com.mawl.easycode.ui.component.EditListComponent;
 import com.mawl.easycode.ui.component.EditorComponent;
 import com.mawl.easycode.ui.component.GroupNameComponent;
@@ -35,7 +35,7 @@ public class GlobalConfigSettingForm implements Configurable, BaseSettings {
     static {
         String descriptionInfo = "";
         try {
-            descriptionInfo = UrlUtil.loadText(GlobalConfigSettingForm.class.getResource("/description/globalConfigDescription.html"));
+            descriptionInfo = FileUtils.loadText(GlobalConfigSettingForm.class.getResource("/description/globalConfigDescription.html"));
         } catch (IOException e) {
             ExceptionUtil.rethrow(e);
         } finally {

@@ -1,6 +1,7 @@
 package com.mawl.easycode.actions;
 
 import com.google.common.collect.Lists;
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
@@ -28,6 +29,12 @@ import java.util.stream.Collectors;
 public class EasyCodeEntityAction extends AnAction {
 
     private final CacheDataUtils cacheDataUtils = CacheDataUtils.getInstance();
+
+    @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        // update 中访问 Project/Module/VirtualFile 模型，需在后台线程执行
+        return ActionUpdateThread.BGT;
+    }
 
     @Override
     public void actionPerformed(@NotNull AnActionEvent event) {

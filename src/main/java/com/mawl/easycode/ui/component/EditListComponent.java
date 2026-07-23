@@ -92,6 +92,12 @@ public class EditListComponent<E extends AbstractEditorItem<E>> {
                         }));
             }
 
+            @NotNull
+            @Override
+            public ActionUpdateThread getActionUpdateThread() {
+                return ActionUpdateThread.EDT;
+            }
+
             @Override
             public void update(@NotNull AnActionEvent e) {
                 e.getPresentation().setEnabled(!CollectionUtil.isEmpty(elementList) && !StringUtils.isEmpty(currentItem));
@@ -121,6 +127,12 @@ public class EditListComponent<E extends AbstractEditorItem<E>> {
                 switchItemFun.accept(elementList.stream().findFirst().orElse(null));
             }
 
+            @NotNull
+            @Override
+            public ActionUpdateThread getActionUpdateThread() {
+                return ActionUpdateThread.EDT;
+            }
+
             @Override
             public void update(@NotNull AnActionEvent e) {
                 e.getPresentation().setEnabled(!CollectionUtil.isEmpty(elementList) && !StringUtils.isEmpty(currentItem));
@@ -140,6 +152,12 @@ public class EditListComponent<E extends AbstractEditorItem<E>> {
                 E target = elementList.remove(index);
                 elementList.add(index - 1, target);
                 switchItemFun.accept(target);
+            }
+
+            @NotNull
+            @Override
+            public ActionUpdateThread getActionUpdateThread() {
+                return ActionUpdateThread.EDT;
             }
 
             @Override
@@ -163,6 +181,12 @@ public class EditListComponent<E extends AbstractEditorItem<E>> {
                 E target = elementList.remove(index);
                 elementList.add(index + 1, target);
                 switchItemFun.accept(target);
+            }
+
+            @NotNull
+            @Override
+            public ActionUpdateThread getActionUpdateThread() {
+                return ActionUpdateThread.EDT;
             }
 
             @Override

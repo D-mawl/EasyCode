@@ -1,12 +1,12 @@
 package com.mawl.easycode.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.intellij.ide.fileTemplates.impl.UrlUtil;
 import com.intellij.util.ExceptionUtil;
 import com.mawl.easycode.dict.GlobalDict;
 import com.mawl.easycode.entity.*;
 import com.mawl.easycode.enums.ColumnConfigType;
 import com.mawl.easycode.tool.CollectionUtil;
+import com.mawl.easycode.tool.FileUtils;
 import com.mawl.easycode.tool.JSON;
 import com.mawl.easycode.tool.StringUtils;
 import lombok.Data;
@@ -32,7 +32,7 @@ public class SettingsStorageDTO {
     public static SettingsStorageDTO defaultVal() {
         try {
             // 从配置文件中加载配置
-            String json = UrlUtil.loadText(SettingsStorageDTO.class.getResource("/defaultConfig.json"));
+            String json = FileUtils.loadText(SettingsStorageDTO.class.getResource("/defaultConfig.json"));
             return JSON.parse(json, SettingsStorageDTO.class);
         } catch (Exception e) {
             ExceptionUtil.rethrow(e);

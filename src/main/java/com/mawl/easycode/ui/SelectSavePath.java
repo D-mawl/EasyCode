@@ -390,19 +390,24 @@ public class SelectSavePath extends DialogWrapper {
      */
     private String getBasePath() {
         Module module = getSelectModule();
+        // 未选中 module 时，回退使用第一个可用 module（moduleList 已把有源码根的排在最前）
+        if (module == null && !moduleList.isEmpty()) {
+            module = moduleList.get(0);
+        }
+        if (module != null) {
+            VirtualFile virtualFile = ModuleUtils.getSourcePath(module);
+            if (virtualFile != null) {
+                // 返回源代码根目录（如 src/main/java）
+                return virtualFile.getPath();
+            }
+        }
+        // 仍拿不到 module/源码根时，才退回项目根目录（保持原有兜底行为）
         VirtualFile baseVirtualFile = ProjectUtils.getBaseDir(project);
         if (baseVirtualFile == null) {
             Messages.showWarningDialog("无法获取到项目基本路径！", GlobalDict.TITLE_INFO);
             return "";
         }
-        String baseDir = baseVirtualFile.getPath();
-        if (module != null) {
-            VirtualFile virtualFile = ModuleUtils.getSourcePath(module);
-            if (virtualFile != null) {
-                baseDir = virtualFile.getPath();
-            }
-        }
-        return baseDir;
+        return baseVirtualFile.getPath();
     }
 
     /**

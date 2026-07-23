@@ -82,6 +82,13 @@ public class RealtimeDebugComponent {
                 runDebug();
             }
 
+            @NotNull
+            @Override
+            public ActionUpdateThread getActionUpdateThread() {
+                // update 中直接访问 Swing 组件（comboBox），必须在 EDT 执行
+                return ActionUpdateThread.EDT;
+            }
+
             @Override
             public void update(@NotNull AnActionEvent e) {
                 String selectVal = (String) comboBox.getSelectedItem();

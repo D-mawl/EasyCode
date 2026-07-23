@@ -1,7 +1,6 @@
 package com.mawl.easycode.ui;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.intellij.ide.fileTemplates.impl.UrlUtil;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.util.ExceptionUtil;
 import com.mawl.easycode.dict.GlobalDict;
@@ -9,6 +8,7 @@ import com.mawl.easycode.dto.SettingsStorageDTO;
 import com.mawl.easycode.entity.Template;
 import com.mawl.easycode.entity.TemplateGroup;
 import com.mawl.easycode.tool.CloneUtils;
+import com.mawl.easycode.tool.FileUtils;
 import com.mawl.easycode.ui.component.*;
 import org.jetbrains.annotations.Nullable;
 
@@ -32,7 +32,7 @@ public class TemplateSettingForm implements Configurable, BaseSettings {
     static {
         String descriptionInfo = "";
         try {
-            descriptionInfo = UrlUtil.loadText(TemplateSettingForm.class.getResource("/description/templateDescription.html"));
+            descriptionInfo = FileUtils.loadText(TemplateSettingForm.class.getResource("/description/templateDescription.html"));
         } catch (IOException e) {
             ExceptionUtil.rethrow(e);
         } finally {

@@ -8,7 +8,6 @@ import com.intellij.openapi.editor.event.DocumentEvent;
 import com.intellij.openapi.editor.event.DocumentListener;
 import com.intellij.openapi.editor.ex.EditorEx;
 import com.intellij.openapi.editor.highlighter.EditorHighlighterFactory;
-import com.intellij.openapi.editor.impl.EditorImpl;
 import com.intellij.openapi.ui.Splitter;
 import com.intellij.ui.BrowserHyperlinkListener;
 import com.intellij.ui.ScrollPaneFactory;
@@ -120,12 +119,12 @@ public class EditorComponent<T extends AbstractEditorItem> {
 
     private void refreshUI() {
         if (this.file == null) {
-            ((EditorImpl)this.editor).setViewer(true);
+            ((EditorEx)this.editor).setViewer(true);
             // 重置文本内容
             WriteCommandAction.runWriteCommandAction(ProjectUtils.getCurrProject(), () -> this.editor.getDocument().setText(""));
             ((EditorEx)editor).setHighlighter(EditorHighlighterFactory.getInstance().createEditorHighlighter(null, "demo.java.vm"));
         } else {
-            ((EditorImpl)this.editor).setViewer(false);
+            ((EditorEx)this.editor).setViewer(false);
             // 重置文本内容
             WriteCommandAction.runWriteCommandAction(ProjectUtils.getCurrProject(), () -> this.editor.getDocument().setText(this.file.fileContent()));
             ((EditorEx)editor).setHighlighter(EditorHighlighterFactory.getInstance().createEditorHighlighter(ProjectUtils.getCurrProject(), this.file.fileName()));

@@ -20,8 +20,11 @@ import com.intellij.util.ExceptionUtil;
 import com.mawl.easycode.dict.GlobalDict;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 
@@ -51,6 +54,19 @@ public class FileUtils {
     }
 
     private FileUtils() {
+    }
+
+    /**
+     * 读取 classpath 资源文本内容（替代内部 API UrlUtil.loadText，使用标准 Java 实现）
+     *
+     * @param url 资源地址
+     * @return 文本内容（UTF-8）
+     * @throws IOException 读取失败
+     */
+    public static String loadText(URL url) throws IOException {
+        try (InputStream stream = url.openStream()) {
+            return new String(stream.readAllBytes(), StandardCharsets.UTF_8);
+        }
     }
 
     /**

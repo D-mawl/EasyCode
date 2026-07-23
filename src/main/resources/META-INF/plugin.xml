@@ -275,8 +275,7 @@
       <p>More <a href="https://github.com/makejavas/EasyCode">Help Info</a>.</p>
     ]]></change-notes>
 
-    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="232.8660.185"/>
+    <!-- since-build / until-build 由 build.gradle 的 intellijPlatform.pluginConfiguration.ideaVersion 统一注入 -->
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
@@ -305,6 +304,8 @@
         <projectService serviceInterface="com.mawl.easycode.service.CodeGenerateService" serviceImplementation="com.mawl.easycode.service.impl.CodeGenerateServiceImpl"/>
         <!--系统设置面板-->
         <applicationConfigurable dynamic="true" instance="com.mawl.easycode.ui.MainSettingForm"/>
+        <!--通知组，替代已废弃的 Notifications.SYSTEM_MESSAGES_GROUP_ID-->
+        <notificationGroup id="EasyCode" displayType="BALLOON"/>
     </extensions>
 
     <actions>

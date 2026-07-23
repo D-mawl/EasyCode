@@ -2,6 +2,7 @@ package com.mawl.easycode.service.impl;
 
 import com.intellij.ide.actions.OpenFileAction;
 import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationGroupManager;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import com.intellij.openapi.actionSystem.AnAction;
@@ -9,10 +10,10 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.fileChooser.*;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
-import com.intellij.openapi.fileEditor.impl.LoadTextUtil;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.vfs.VfsUtil;
+import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileWrapper;
 import com.intellij.util.ExceptionUtil;
@@ -60,12 +61,11 @@ public class LocalFileExportImportSettingsServiceImpl implements ExportImportSet
                     FileDocumentManager.getInstance().reloadFiles(virtualFile);
                 }
 
-                // 发起通知
-                Notification notification = new Notification(
-                        Notifications.SYSTEM_MESSAGES_GROUP_ID,
-                        "Easy code notify",
-                        "Easy code config file export to",
-                        NotificationType.INFORMATION);
+                // 发起通知（使用注册的通知组，替代已废弃的 Notifications.SYSTEM_MESSAGES_GROUP_ID）
+                Notification notification = NotificationGroupManager.getInstance()
+                        .getNotificationGroup("EasyCode")
+                        .createNotification("Easy code config file export to", NotificationType.INFORMATION)
+                        .setTitle("Easy code notify");
                 notification.addAction(new AnAction(file.getName()) {
                     @Override
                     public void actionPerformed(@NotNull AnActionEvent e) {
@@ -94,7 +94,13 @@ public class LocalFileExportImportSettingsServiceImpl implements ExportImportSet
             Messages.showWarningDialog("config file not found！", GlobalDict.TITLE_INFO);
             return null;
         }
-        String json = LoadTextUtil.loadText(virtualFile).toString();
+        String json;
+        try {
+            json = VfsUtilCore.loadText(virtualFile);
+        } catch (IOException e) {
+            ExceptionUtil.rethrow(e);
+            return null;
+        }
         return JSON.parse(json, SettingsStorageDTO.class);
     }
 }

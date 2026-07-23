@@ -111,6 +111,12 @@ public class GroupNameComponent<E extends AbstractItem<E>, T extends AbstractGro
                 switchGroupConsumer.accept(groupMap.get(GlobalDict.DEFAULT_GROUP_NAME));
             }
 
+            @NotNull
+            @Override
+            public ActionUpdateThread getActionUpdateThread() {
+                return ActionUpdateThread.EDT;
+            }
+
             @Override
             public void update(@NotNull AnActionEvent e) {
                 e.getPresentation().setEnabled(!GlobalDict.DEFAULT_GROUP_NAME.equals(currGroupName));
