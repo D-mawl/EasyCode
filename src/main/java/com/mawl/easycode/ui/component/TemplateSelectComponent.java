@@ -115,6 +115,34 @@ public class TemplateSelectComponent {
         this.groupComboBox.setSelectedItem(groupName);
     }
 
+    /**
+     * 设置选中的模板名称列表
+     */
+    public void setSelectedTemplates(List<String> templateNames) {
+        if (checkBoxList == null || templateNames == null) {
+            return;
+        }
+        for (JBCheckBox checkBox : checkBoxList) {
+            checkBox.setSelected(templateNames.contains(checkBox.getText()));
+        }
+    }
+
+    /**
+     * 获取当前选中的模板名称列表
+     */
+    public List<String> getSelectedTemplateNames() {
+        if (checkBoxList == null) {
+            return Collections.emptyList();
+        }
+        List<String> names = new ArrayList<>();
+        for (JBCheckBox checkBox : checkBoxList) {
+            if (checkBox.isSelected()) {
+                names.add(checkBox.getText());
+            }
+        }
+        return names;
+    }
+
     public List<Template> getAllSelectedTemplate() {
         String groupName = (String) this.groupComboBox.getSelectedItem();
         if (StringUtils.isEmpty(groupName)) {

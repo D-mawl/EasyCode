@@ -284,10 +284,9 @@
 
     -->
     <depends>com.intellij.modules.platform</depends>
-    <!--通过类生成代码，需要依赖Java插件-->
-    <depends>com.intellij.modules.java</depends>
     <!--必须依赖Database Tool插件-->
     <depends>com.intellij.database</depends>
+    <!--通过类生成代码，需要依赖Java插件（可选，缺失时该功能自动关闭）-->
     <depends optional="true" config-file="easycode-java.xml">com.intellij.modules.java</depends>
 
     <application-components>

@@ -15,7 +15,7 @@ plugins {
 
 
 group 'com.mawl.easycode'
-version '2.0.1'
+version '2.0.3'
 
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17

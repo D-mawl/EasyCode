@@ -1,5 +1,6 @@
 package com.mawl.easycode.ui;
 
+import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.module.Module;
@@ -32,6 +33,7 @@ import java.awt.event.FocusEvent;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -121,6 +123,17 @@ public class SelectSavePath extends DialogWrapper {
      * 模板选择组件
      */
     private TemplateSelectComponent templateSelectComponent;
+
+    private static final String LAST_USED_PREFIX = "EasyCode.LastUsed.";
+    private static final String KEY_MODULE_NAME = LAST_USED_PREFIX + "ModuleName";
+    private static final String KEY_PACKAGE_NAME = LAST_USED_PREFIX + "PackageName";
+    private static final String KEY_PRE_NAME = LAST_USED_PREFIX + "PreName";
+    private static final String KEY_TEMPLATE_GROUP = LAST_USED_PREFIX + "TemplateGroupName";
+    private static final String KEY_SELECTED_TEMPLATES = LAST_USED_PREFIX + "SelectedTemplates";
+    private static final String KEY_RE_FORMAT = LAST_USED_PREFIX + "ReFormat";
+    private static final String KEY_TITLE_SURE = LAST_USED_PREFIX + "TitleSure";
+    private static final String KEY_TITLE_REFUSE = LAST_USED_PREFIX + "TitleRefuse";
+    private static final String KEY_UNIFIED_CONFIG = LAST_USED_PREFIX + "UnifiedConfig";
 
     /**
      * 构造方法
@@ -232,9 +245,13 @@ public class SelectSavePath extends DialogWrapper {
             tableInfo = tableInfoService.getTableInfo(cacheDataUtils.getSelectDbTable());
         }
 
+        boolean hasTableModuleSetting = false;
+        boolean hasTableTemplateGroup = false;
+
         // 设置默认配置信息
         if (!StringUtils.isEmpty(tableInfo.getSaveModelName())) {
             moduleComboBox.setSelectedItem(tableInfo.getSaveModelName());
+            hasTableModuleSetting = true;
         }
         if (!StringUtils.isEmpty(tableInfo.getSavePackageName())) {
             packageField.setText(tableInfo.getSavePackageName());
@@ -247,6 +264,7 @@ public class SelectSavePath extends DialogWrapper {
         if (!StringUtils.isEmpty(tableInfo.getTemplateGroupName())) {
             if (settings.getTemplateGroupMap().containsKey(tableInfo.getTemplateGroupName())) {
                 groupName = tableInfo.getTemplateGroupName();
+                hasTableTemplateGroup = true;
             }
         }
         templateSelectComponent.setSelectedGroupName(groupName);
@@ -259,6 +277,9 @@ public class SelectSavePath extends DialogWrapper {
             }
             pathField.setText(savePath);
         }
+
+        // 对于没有保存过配置的表，使用上次生成的设置作为默认值
+        applyLastUsedSettings(hasTableModuleSetting, hasTableTemplateGroup);
     }
 
     @Override
@@ -312,6 +333,9 @@ public class SelectSavePath extends DialogWrapper {
         }
         // 保存配置
         tableInfoService.saveTableInfo(tableInfo);
+
+        // 保存本次选择作为下次新表的默认值
+        saveLastUsedSettings();
 
         // 生成代码
         codeGenerateService.generate(selectTemplateList, getGenerateOptions());
@@ -395,5 +419,75 @@ public class SelectSavePath extends DialogWrapper {
             path += "/" + packageName.replace(".", "/");
         }
         pathField.setText(path);
+    }
+
+    private void saveLastUsedSettings() {
+        PropertiesComponent props = PropertiesComponent.getInstance(project);
+        Module module = getSelectModule();
+        if (module != null) {
+            props.setValue(KEY_MODULE_NAME, module.getName());
+        }
+        props.setValue(KEY_PACKAGE_NAME, packageField.getText());
+        props.setValue(KEY_PRE_NAME, preField.getText());
+        props.setValue(KEY_TEMPLATE_GROUP, templateSelectComponent.getselectedGroupName());
+        List<String> selectedTemplates = templateSelectComponent.getSelectedTemplateNames();
+        if (!selectedTemplates.isEmpty()) {
+            props.setValue(KEY_SELECTED_TEMPLATES, String.join(",", selectedTemplates));
+        }
+        props.setValue(KEY_RE_FORMAT, String.valueOf(reFormatCheckBox.isSelected()));
+        props.setValue(KEY_TITLE_SURE, String.valueOf(titleSureCheckBox.isSelected()));
+        props.setValue(KEY_TITLE_REFUSE, String.valueOf(titleRefuseCheckBox.isSelected()));
+        props.setValue(KEY_UNIFIED_CONFIG, String.valueOf(unifiedConfigCheckBox.isSelected()));
+    }
+
+    private void applyLastUsedSettings(boolean hasTableModuleSetting, boolean hasTableTemplateGroup) {
+        PropertiesComponent props = PropertiesComponent.getInstance(project);
+
+        if (!hasTableModuleSetting) {
+            String lastModule = props.getValue(KEY_MODULE_NAME);
+            if (!StringUtils.isEmpty(lastModule)) {
+                moduleComboBox.setSelectedItem(lastModule);
+            }
+        }
+        if (StringUtils.isEmpty(packageField.getText())) {
+            String lastPackage = props.getValue(KEY_PACKAGE_NAME);
+            if (!StringUtils.isEmpty(lastPackage)) {
+                packageField.setText(lastPackage);
+            }
+        }
+        if (StringUtils.isEmpty(preField.getText())) {
+            String lastPreName = props.getValue(KEY_PRE_NAME);
+            if (!StringUtils.isEmpty(lastPreName)) {
+                preField.setText(lastPreName);
+            }
+        }
+        if (!hasTableTemplateGroup) {
+            String lastTemplateGroup = props.getValue(KEY_TEMPLATE_GROUP);
+            if (!StringUtils.isEmpty(lastTemplateGroup)) {
+                templateSelectComponent.setSelectedGroupName(lastTemplateGroup);
+            }
+        }
+        // 恢复上次选中的模板（Controller/Service/Entity 等）
+        String lastSelectedTemplates = props.getValue(KEY_SELECTED_TEMPLATES);
+        if (!StringUtils.isEmpty(lastSelectedTemplates)) {
+            templateSelectComponent.setSelectedTemplates(Arrays.asList(lastSelectedTemplates.split(",")));
+        }
+        // 复选框没有按表持久化，始终使用上次的值
+        String lastReFormat = props.getValue(KEY_RE_FORMAT);
+        if (lastReFormat != null) {
+            reFormatCheckBox.setSelected(Boolean.parseBoolean(lastReFormat));
+        }
+        String lastTitleSure = props.getValue(KEY_TITLE_SURE);
+        if (lastTitleSure != null) {
+            titleSureCheckBox.setSelected(Boolean.parseBoolean(lastTitleSure));
+        }
+        String lastTitleRefuse = props.getValue(KEY_TITLE_REFUSE);
+        if (lastTitleRefuse != null) {
+            titleRefuseCheckBox.setSelected(Boolean.parseBoolean(lastTitleRefuse));
+        }
+        String lastUnifiedConfig = props.getValue(KEY_UNIFIED_CONFIG);
+        if (lastUnifiedConfig != null) {
+            unifiedConfigCheckBox.setSelected(Boolean.parseBoolean(lastUnifiedConfig));
+        }
     }
 }
