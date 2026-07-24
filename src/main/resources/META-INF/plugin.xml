@@ -21,6 +21,17 @@
 
 
     <change-notes><![CDATA[
+      <p>3.0.2</p>
+      <ul>
+        <li>1.Only supports IntelliJ IDEA 2026.1 and above</li>
+        <li>2.Added memory feature: remembers your last selections to avoid repetitive operations</li>
+        <li>3.Fix code being generated into the wrong directory when no module is selected: now falls back to the first module with a source root, correctly generating under src/main/java</li>
+      </ul>
+      <ul>
+        <li>1.仅支持 IntelliJ IDEA 2026.1 及以上版本</li>
+        <li>2.增加记忆功能：记住上次的选择，避免重复操作</li>
+        <li>3.修复未选择 Module 时代码生成到错误目录：当项目没有明确 module（或对话框中未选中 module）时，之前会把 package 目录创建在项目根目录下（与 src 同级）。现在会自动回退到第一个含源码根的 module，正确生成到 src/main/java 下</li>
+      </ul>
       <p>2.0.1</p>
       <ul>
         <li>1.Fork from makejavas/EasyCode and upgrade dependencies</li>
